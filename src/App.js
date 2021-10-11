@@ -1,25 +1,35 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState, useEffect } from "react"
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+const useContador = (inicial) => {
+  const [contador, setContador] = useState(inicial)
+  const incrementar = () => {
+    setContador(contador + 1)
+  }
+
+  return [contador, incrementar]
 }
 
-export default App;
+const Interval = ({ contador }) => {
+  useEffect(() => {
+    const i = setInterval(() => console.log(contador), 1000)
+    return () => clearInterval(i)
+  }, [contador])
+  return(
+    <p>Intervalo</p>
+  )
+}
+const App = () => {
+  const [contador, incrementar] = useContador(0)
+  useEffect(()=> {
+    //console.log("soy un efecto")
+  }, [contador])
+  return (
+    <div>
+      Contador: {contador}
+      <button onClick={incrementar}>Incrementar</button>
+      <Interval contador={contador}></Interval>
+    </div>
+  )
+}
+
+export default App
